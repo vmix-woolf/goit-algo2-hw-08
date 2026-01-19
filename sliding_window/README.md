@@ -1,41 +1,41 @@
 # Sliding Window Rate Limiter
 
-This task implements a rate limiting mechanism for a chat system
-using the Sliding Window algorithm.
+Це завдання реалізує механізм обмеження частоти повідомлень
+у чат-системі з використанням алгоритму Sliding Window.
 
-## Problem
+## Умова задачі
 
-The system limits how frequently users can send messages
-to prevent spam.
+Система обмежує частоту надсилання повідомлень користувачами
+для запобігання спаму.
 
-Base parameters:
-- Window size: 10 seconds
-- Max messages per window: 1 message per user
+Базові параметри:
+- Розмір вікна: 10 секунд
+- Максимальна кількість повідомлень у вікні: 1 повідомлення на користувача
 
-## Algorithm
+## Алгоритм
 
-The Sliding Window algorithm is used to track message timestamps
-for each user and determine whether a new message can be sent
-within the current time window.
+Алгоритм Sliding Window використовується для відстеження часових міток
+повідомлень кожного користувача та визначення, чи може нове повідомлення
+бути надіслане в межах поточного часового вікна.
 
-Message history is stored using `collections.deque`.
+Історія повідомлень зберігається з використанням `collections.deque`.
 
-## Implementation Details
+## Деталі реалізації
 
-- Each user has a deque of message timestamps
-- Old timestamps are removed during each check
-- If no timestamps remain, the user is removed from storage
-- The limiter supports:
-  - Checking if a message can be sent
-  - Recording a message
-  - Calculating time until the next allowed message
+- Кожен користувач має deque з часовими мітками повідомлень
+- Застарілі часові мітки видаляються під час кожної перевірки
+- Якщо після очищення часових міток не залишилося,
+  запис про користувача видаляється зі сховища
+- Rate limiter підтримує:
+  - Перевірку можливості надсилання повідомлення
+  - Запис повідомлення
+  - Розрахунок часу очікування до наступного дозволеного повідомлення
 
-## Demo
+## Демонстрація
 
-A demonstration function simulates message sending from
-multiple users with random delays.
+Демонстраційна функція симулює надсилання повідомлень
+від кількох користувачів із випадковими затримками.
 
-The output shows:
-- Allowed messages
-- Blocked messages with remaining wait time
-
+Виведення показує:
+- Дозволені повідомлення
+- Заблоковані повідомлення з часом очікування

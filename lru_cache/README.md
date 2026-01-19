@@ -1,33 +1,33 @@
-# LRU Cache — Range Sum Optimization
+# LRU Cache — Оптимізація підрахунку сум діапазонів
 
-This task demonstrates how an LRU cache improves performance
-for repeated range sum queries over a large array.
+Це завдання демонструє, як використання LRU-кешу
+покращує продуктивність при багаторазових запитах
+на підрахунок сум діапазонів у великому масиві.
 
-## Problem
+## Умова задачі
 
-- Array size: 100,000 elements
-- Number of queries: 50,000
-- Query types:
-  - Range(L, R): sum of array[L:R+1]
-  - Update(index, value): update array element
-- 95% of range queries target a small set of "hot" ranges
-- Cache capacity: 1000 entries
+- Розмір масиву: 100 000 елементів
+- Кількість запитів: 50 000
+- Типи запитів:
+  - Range(L, R): сума елементів масиву array[L:R+1]
+  - Update(index, value): оновлення значення елемента масиву
+- 95% Range-запитів звертаються до невеликого набору «гарячих» діапазонів
+- Місткість кешу: 1000 записів
 
-## Implementation
+## Реалізація
 
-Two approaches are compared:
+Порівнюються два підходи:
 
-1. **Without cache**
-   - Each range query computes the sum directly.
-2. **With LRU cache**
-   - Results of range queries are cached.
-   - On update, all cached ranges containing the updated index
-     are invalidated using a linear scan.
+1. **Без кешу**
+   - Кожен Range-запит обчислює суму безпосередньо.
+2. **З LRU-кешем**
+   - Результати Range-запитів кешуються.
+   - При Update всі кешовані діапазони, що містять оновлений індекс,
+     інвалідовуються за допомогою лінійного проходу.
 
-## Results (example)
-
-```
-Without cache: 5.78 s
-LRU cache: 2.17 s
-Speedup: x2.7
+## Результати (приклад)
+```aiignore
+Без кешу: 5.78 c
+LRU-кеш: 2.17 c
+Прискорення: ×2.7
 ```
