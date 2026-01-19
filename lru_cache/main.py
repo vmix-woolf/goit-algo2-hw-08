@@ -73,8 +73,7 @@ def range_sum_with_cache(array, left, right, cache):
 
 def run_with_cache(array, queries):
     """
-    Виконує всі запити з використанням LRU-кешу
-    та повертає час виконання.
+    Виконує всі запити з використанням LRU-кешу та коректною інвалідацією при Update.
     """
     cache = LRUCache(capacity=1000)
 
@@ -86,10 +85,23 @@ def run_with_cache(array, queries):
             range_sum_with_cache(array, left, right, cache)
         else:
             _, index, value = query
-            # Update поки що без інвалідації кешу
-            array[index] = value
+            update_with_cache(array, index, value, cache)
 
     return time.perf_counter() - start
+
+
+
+def update_with_cache(array, index, value, cache):
+    """
+    Оновлює масив та інвалідовує кешовані діапазони,
+    що містять змінений індекс.
+    """
+    array[index] = value
+
+    # Лінійна інвалідація кешу за ТЗ
+    for left, right in cache.keys():
+        if left <= index <= right:
+            cache.cache.pop((left, right), None)
 
 
 if __name__ == "__main__":
