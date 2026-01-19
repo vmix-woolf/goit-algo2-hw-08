@@ -1,6 +1,8 @@
 import random
 import time
 from queries import make_queries
+from lru_cache import LRUCache
+
 
 
 def range_sum_no_cache(array, left, right):
@@ -39,16 +41,55 @@ def main():
     N = 100_000
     Q = 50_000
 
-    # Генеруємо масив
-    array = [random.randint(1, 100) for _ in range(N)]
-
-    # Генеруємо запити
+    base_array = [random.randint(1, 100) for _ in range(N)]
     queries = make_queries(N, Q)
 
-    # Запуск без кешу
-    elapsed = run_no_cache(array, queries)
+    # Без кешу
+    t_no_cache = run_no_cache(base_array.copy(), queries)
 
-    print(f"Без кешу :  {elapsed:.2f} c")
+    # З кешем
+    t_with_cache = run_with_cache(base_array.copy(), queries)
+
+    print(f"Без кешу :  {t_no_cache:.2f} c")
+    print(f"LRU-кеш  :  {t_with_cache:.2f} c")
+    print(f"(прискорення ×{t_no_cache / t_with_cache:.1f})")
+
+
+
+def range_sum_with_cache(array, left, right, cache):
+    """
+    Обчислює суму елементів масиву з використанням LRU-кешу.
+    """
+    key = (left, right)
+
+    cached_value = cache.get(key)
+    if cached_value != -1:
+        return cached_value
+
+    total = sum(array[left:right + 1])
+    cache.put(key, total)
+    return total
+
+
+def run_with_cache(array, queries):
+    """
+    Виконує всі запити з використанням LRU-кешу
+    та повертає час виконання.
+    """
+    cache = LRUCache(capacity=1000)
+
+    start = time.perf_counter()
+
+    for query in queries:
+        if query[0] == "Range":
+            _, left, right = query
+            range_sum_with_cache(array, left, right, cache)
+        else:
+            _, index, value = query
+            # Update поки що без інвалідації кешу
+            array[index] = value
+
+    return time.perf_counter() - start
 
 
 if __name__ == "__main__":
